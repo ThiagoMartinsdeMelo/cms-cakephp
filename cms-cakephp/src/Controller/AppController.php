@@ -45,11 +45,34 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'loginRedirect' => [
+                'controller' => 'welcome',
+                'action' => 'index'
+            ],
+            'logoutRedirect' => [
+                'controller' => 'users',
+                'action' => 'login'
+            ]
+        ]);
 
         /*
          * Enable the following component for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
         //$this->loadComponent('Security');
+    }
+
+    public function beforeRender(Event $event)
+    {
+        $prefix = null;
+        if (($this->request->getParam(['prefix']) !== null)) {
+            $prefix = $this->request->getParam(['prefix']);
+        }
+        if ($prefix == 'admin') {
+            if (($this->request->getParam(['action']) !== null) && ($this->request->getParam(['action']) == 'login')) {
+                $this->viewBuilder()->setLayout('login');
+            }
+        }
     }
 }
