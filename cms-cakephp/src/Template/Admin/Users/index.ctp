@@ -8,11 +8,9 @@
     <div class="mr-auto p-2">
         <h2 class="display-4 titulo">Listar Usuários</h2>
     </div>
-    <a href="cadastrar.html">
-        <div class="p-2">
-            <button class="btn btn-outline-success btn-sm">Cadastrar</button>
-        </div>
-    </a>
+    <div class="p-2">
+        <?= $this->Html->link(__('Cadastrar'), ['controller' => 'users', 'action' => 'add'], ['class' => 'btn btn-outline-success btn-sm']); ?>
+    </div>
 </div>
 <?= $this->Flash->render() ?>
 <div class="alert alert-success" role="alert">
@@ -58,23 +56,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <nav aria-label="paginacao">
-        <ul class="pagination pagination-sm justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Primeira</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item active">
-                <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Última</a>
-            </li>
-        </ul>
-    </nav>
+    <?= $this->element('pagination'); ?>
 </div>
 
 
@@ -119,14 +101,4 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
 </div>
