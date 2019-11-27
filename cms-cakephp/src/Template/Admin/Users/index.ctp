@@ -37,18 +37,18 @@
                     <td class="d-none d-lg-table-cell"><?= h($user->created) ?></td>
                     <td class="text-center">
                         <span class="d-none d-md-block">
-                            <a href="visualizar.html" class="btn btn-outline-primary btn-sm">Visualizar</a>
-                            <a href="editar.html" class="btn btn-outline-warning btn-sm">Editar</a>
-                            <a href="apagar.html" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#apagarRegistro">Apagar</a>
+                            <?= $this->Html->link(__('Visualizar'), ['action' => 'view', $user->id], ['class' => 'btn btn-outline-primary btn-sm']); ?>
+                            <?= $this->Html->link(__('Editar'), ['action' => 'edit', $user->id], ['class' => 'btn btn-outline-warning btn-sm']); ?>
+                            <?= $this->Form->postLink(__('Apagar'), ['action' => 'delete', $user->id], ['class' => 'btn btn-outline-danger btn-sm', 'data-toggle' => 'modal', 'data-target' => '#apagarRegistro', 'confirm' => __('Are you sure you want to delete # {0}?', $user->name)]); ?>
                         </span>
                         <div class="dropdown d-block d-md-none">
                             <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="acoesListar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Ações
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="acoesListar">
-                                <a class="dropdown-item" href="visualizar.html">Visualizar</a>
-                                <a class="dropdown-item" href="editar.html">Editar</a>
-                                <a class="dropdown-item" href="apagar.html" data-toggle="modal" data-target="#apagarRegistro">Apagar</a>
+                                <?= $this->Html->link(__('Visualizar'), ['action' => 'view', $user->id], ['class' => 'dropdown-item']); ?>
+                                <?= $this->Html->link(__('Editar'), ['action' => 'edit', $user->id], ['class' => 'dropdown-item']); ?>
+                                <?= $this->Form->postLink(__('Apagar'), ['action' => 'delete', $user->id], ['class' => 'dropdown-item', 'data-toggle' => 'modal', 'data-target' => '#apagarRegistro', 'confirm' => __('Are you sure you want to delete # {0}?', $user->name)]); ?>
                             </div>
                         </div>
                     </td>
@@ -57,20 +57,4 @@
         </tbody>
     </table>
     <?= $this->element('pagination'); ?>
-</div>
-
-<div class="users index large-9 medium-8 columns content">
-    <table cellpadding="0" cellspacing="0">
-        <tbody>
-            <?php foreach ($users as $user): ?>
-            <tr>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
 </div>
