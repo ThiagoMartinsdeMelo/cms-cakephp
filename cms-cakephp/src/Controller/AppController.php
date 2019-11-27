@@ -74,6 +74,8 @@ class AppController extends Controller
             if (($this->request->getParam(['action']) !== null) && ($this->request->getParam(['action']) == 'login')) {
                 $this->viewBuilder()->setLayout('login');
             } else {
+                $perfilUser = $this->Auth->user();
+                $this->set(compact('perfilUser'));
                 $this->viewBuilder()->setLayout('admin');
             }
         }
