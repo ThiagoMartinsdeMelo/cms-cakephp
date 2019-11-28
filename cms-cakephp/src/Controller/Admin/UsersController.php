@@ -117,6 +117,41 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
+    public function editSenhaPerfil()
+    {
+        $user_id = $this->Auth->user('id');
+        $user = $this->Users->get($user_id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Senha editada com sucesso.'));
+
+                return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
+            }
+            $this->Flash->danger(__('Erro: Senha nao foi editada com sucesso.'));
+        }    
+        $this->set(compact('user'));
+    }
+
+    public function editSenha($id = null)
+    {
+        $user = $this->Users->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Senha do usuario editada com sucesso.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->danger(__('Erro: A senha do usuario nao foi editada com sucesso.'));
+        }
+        $this->set(compact('user'));
+    }
+
     /**
      * Delete method
      *
