@@ -152,6 +152,37 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
+    public function alterarFotoPerfil()
+    {
+        $user_id = $this->Auth->user('id');
+        $user = $this->Users->get($user_id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $nomeImg = $this->request->getData()['imagem']['name'];
+            $imgTmp = $this->request->getData()['imagem']['tmp_name'];
+            $user = $this->Users->newEntity();
+            $user->id = $user_id;
+            $user->imagem = $nomeImg;
+            $destino = 'files'.DS.'user'.DS.$user_id.DS.$nomeImg;
+            if (move_uploaded_file($imgTmp, WWW_ROOT . $destino)) {
+                if ($this->Users->save()) {
+                    if ($this->Auth->user('id') === $user->id) {
+                        $user = $this->Users->get($user_id, [
+                            'contain' => []
+                        ]);
+                        $this->Auth->setUser($user);
+                        $this->Flash->success(__('Foto editada com sucesso.'));
+                        return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
+                    }
+                } else {
+                    $this->Flash->danger(__('Foto nao foi editada com sucesso.'));
+                }
+            }
+        }
+        $this->set(compact('user'));
+    }
+
     /**
      * Delete method
      *
