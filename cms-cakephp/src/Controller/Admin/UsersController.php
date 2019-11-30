@@ -158,6 +158,7 @@ class UsersController extends AppController
         $user = $this->Users->get($user_id, [
             'contain' => []
         ]);
+        $imagemAntiga = $user->imagem;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $nomeImg = $this->request->getData()['imagem']['name'];
             $imgTmp = $this->request->getData()['imagem']['tmp_name'];
@@ -166,15 +167,18 @@ class UsersController extends AppController
             $user->imagem = $nomeImg;
             $destino = 'files'.DS.'user'.DS.$user_id.DS.$nomeImg;
             if (move_uploaded_file($imgTmp, WWW_ROOT . $destino)) {
+                if (($imagemAntiga !== null) && ($imagemAntiga !== $user->imagem)) {
+                    unlink(WWW_ROOT.'files'.DS.'iser'.DS.$user_id.DS.$imagemAntiga);
+                }
                 if ($this->Users->save()) {
                     if ($this->Auth->user('id') === $user->id) {
                         $user = $this->Users->get($user_id, [
                             'contain' => []
                         ]);
                         $this->Auth->setUser($user);
-                        $this->Flash->success(__('Foto editada com sucesso.'));
-                        return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
                     }
+                    $this->Flash->success(__('Foto editada com sucesso.'));
+                    return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
                 } else {
                     $this->Flash->danger(__('Foto nao foi editada com sucesso.'));
                 }
