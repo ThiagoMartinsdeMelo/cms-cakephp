@@ -160,28 +160,21 @@ class UsersController extends AppController
         ]);
         $imagemAntiga = $user->imagem;
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $nomeImg = $this->request->getData()['imagem']['name'];
-            $imgTmp = $this->request->getData()['imagem']['tmp_name'];
+            $user = $this->Users->patchEntity($user, $this->request->data);
+            $destino = WWW_ROOT.'files'.DS.'user'.DS.$user_id.DS;
             $user = $this->Users->newEntity();
-            $user->id = $user_id;
-            $user->imagem = $nomeImg;
-            $destino = 'files'.DS.'user'.DS.$user_id.DS.$nomeImg;
-            if (move_uploaded_file($imgTmp, WWW_ROOT . $destino)) {
-                if (($imagemAntiga !== null) && ($imagemAntiga !== $user->imagem)) {
-                    unlink(WWW_ROOT.'files'.DS.'user'.DS.$user_id.DS.$imagemAntiga);
-                }
+            $user->imagem = $this->Users->singleUpload($this->request->getData()['imagem'], $destino);
+            if ($user->imagem) {
+                $user->id = $user_id;
                 if ($this->Users->save($user)) {
-                    if ($this->Auth->user('id') === $user->id) {
-                        $user = $this->Users->get($user_id, [
-                            'contain' => []
-                        ]);
-                        $this->Auth->setUser($user);
+                    if (($imagemAntiga !== null) && ($imagemAntiga !== $user->imagem)) {
+                        unlink($destino.$imagemAntiga);
                     }
                     $this->Flash->success(__('Foto editada com sucesso.'));
                     return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
-                } else {
-                    $this->Flash->danger(__('Foto não foi editada com sucesso.'));
                 }
+            } else {
+                $this->Flash->danger(__('Foto não foi editada com sucesso.'));
             }
         }
         $this->set(compact('user'));
