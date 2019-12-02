@@ -165,14 +165,12 @@ class UsersController extends AppController
             $user = $this->Users->newEntity();
             $user->id = $user_id;
             $user->imagem = $nomeImg;
-           // dd($this->Auth->user('id'));
             $destino = 'files'.DS.'user'.DS.$user_id.DS.$nomeImg;
             if (move_uploaded_file($imgTmp, WWW_ROOT . $destino)) {
                 if (($imagemAntiga !== null) && ($imagemAntiga !== $user->imagem)) {
-                    //unlink(WWW_ROOT.'files'.DS.'user'.DS.$user_id.DS.$imagemAntiga);
+                    unlink(WWW_ROOT.'files'.DS.'user'.DS.$user_id.DS.$imagemAntiga);
                 }
                 if ($this->Users->save($user)) {
-                    //dd($this->Auth->user);
                     if ($this->Auth->user('id') === $user->id) {
                         $user = $this->Users->get($user_id, [
                             'contain' => []
