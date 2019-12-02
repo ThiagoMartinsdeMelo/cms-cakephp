@@ -112,7 +112,7 @@ class UsersController extends AppController
 
                 return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
             }
-            $this->Flash->danger(__('Erro: Perfil nao foi editado com sucesso.'));
+            $this->Flash->danger(__('Erro: Perfil não foi editado com sucesso.'));
         }
         $this->set(compact('user'));
     }
@@ -130,7 +130,7 @@ class UsersController extends AppController
 
                 return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
             }
-            $this->Flash->danger(__('Erro: Senha nao foi editada com sucesso.'));
+            $this->Flash->danger(__('Erro: Senha não foi editada com sucesso.'));
         }    
         $this->set(compact('user'));
     }
@@ -143,11 +143,11 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('Senha do usuario editada com sucesso.'));
+                $this->Flash->success(__('Senha do usuário editada com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->danger(__('Erro: A senha do usuario nao foi editada com sucesso.'));
+            $this->Flash->danger(__('Erro: A senha do usuario não foi editada com sucesso.'));
         }
         $this->set(compact('user'));
     }
@@ -165,12 +165,14 @@ class UsersController extends AppController
             $user = $this->Users->newEntity();
             $user->id = $user_id;
             $user->imagem = $nomeImg;
+           // dd($this->Auth->user('id'));
             $destino = 'files'.DS.'user'.DS.$user_id.DS.$nomeImg;
             if (move_uploaded_file($imgTmp, WWW_ROOT . $destino)) {
                 if (($imagemAntiga !== null) && ($imagemAntiga !== $user->imagem)) {
-                    unlink(WWW_ROOT.'files'.DS.'iser'.DS.$user_id.DS.$imagemAntiga);
+                    //unlink(WWW_ROOT.'files'.DS.'user'.DS.$user_id.DS.$imagemAntiga);
                 }
-                if ($this->Users->save()) {
+                if ($this->Users->save($user)) {
+                    //dd($this->Auth->user);
                     if ($this->Auth->user('id') === $user->id) {
                         $user = $this->Users->get($user_id, [
                             'contain' => []
@@ -180,7 +182,7 @@ class UsersController extends AppController
                     $this->Flash->success(__('Foto editada com sucesso.'));
                     return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
                 } else {
-                    $this->Flash->danger(__('Foto nao foi editada com sucesso.'));
+                    $this->Flash->danger(__('Foto não foi editada com sucesso.'));
                 }
             }
         }

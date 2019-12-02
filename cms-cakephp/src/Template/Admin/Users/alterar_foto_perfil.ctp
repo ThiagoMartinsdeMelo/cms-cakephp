@@ -26,9 +26,19 @@
 <?= $this->Flash->render(); ?>
 <?= $this->Form->create($user, ['enctype' => 'multipart/form-data']) ?>
     <div class="form-row">
-        <div class="form-group col-md-12">
-            <label><span class="text-danger">*</span> Foto</label>
-            <?= $this->Form->file('imagem', ['class' => 'form-control', 'label' => false]); ?>
+        <div class="form-group col-md-6">
+            <label><span class="text-danger">*</span> Foto (150X150)</label>
+            <?= $this->Form->file('imagem', ['label' => false, 'onchange' => 'previewImagem()']); ?>
+        </div>
+        <div class="form-group col-md-6">
+            <?php
+                if ($user->imagem !== null) {
+                    $imagem_antiga = '..'.DS.'..'.DS.'files'.DS.'user'.DS.$user->id.DS.$user->imagem;
+                } else {
+                    $imagem_antiga = '..'.DS.'..'.DS.'files'.DS.'user'.DS.'preview_img.png';
+                }
+            ?>
+            <img src="<?= $imagem_antiga; ?>" alt="<?= $user->name; ?>" id="preview-img" class="img-thumbnail" style="width: 150px; height: 150px;">
         </div>
     </div>
     <p>

@@ -11,7 +11,7 @@
                         <?= $this->Html->image('../files/user/'.$perfilUser['id'].'/'.$perfilUser['imagem'], ['class' => 'rounded-circle', 'width' => '20', 'height' => '20']); ?>
                         &nbsp;
                     <?php } else { ?>
-                        <?= $this->Html->image('../files/user/logo_celk.png', ['class' => 'rounded-circle', 'width' => '20', 'height' => '20']); ?>
+                        <?= $this->Html->image('../files/user/user.png', ['class' => 'rounded-circle', 'width' => '20', 'height' => '20']); ?>
                     <?php } ?>
                         <span class="d-none d-sm-inline"><?= current(str_word_count($perfilUser['name'], 2)); ?></span>
                 </a>
