@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -47,11 +48,11 @@ class AppController extends Controller
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
             'loginRedirect' => [
-                'controller' => 'welcome',
+                'controller' => 'Welcome',
                 'action' => 'index'
             ],
             'logoutRedirect' => [
-                'controller' => 'users',
+                'controller' => 'Users',
                 'action' => 'login'
             ],
             'authError' => false
@@ -74,7 +75,8 @@ class AppController extends Controller
             if (($this->request->getParam(['action']) !== null) && ($this->request->getParam(['action']) == 'login')) {
                 $this->viewBuilder()->setLayout('login');
             } else {
-                $perfilUser = $this->Auth->user();
+                $user = TableRegistry::get('Users');
+                $perfilUser = $user->getUserDados($this->Auth->user('id'));
                 $this->set(compact('perfilUser'));
                 $this->viewBuilder()->setLayout('admin');
             }

@@ -7,13 +7,13 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle menu-header" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                    <?php if (!empty($perfilUser['imagem'])){ ?>
-                        <?= $this->Html->image('../files/user/'.$perfilUser['id'].'/'.$perfilUser['imagem'], ['class' => 'rounded-circle', 'width' => '20', 'height' => '20']); ?>
+                    <?php if (!empty($perfilUser->imagem)){ ?>
+                        <?= $this->Html->image('../files/user/'.$perfilUser->id.'/'.$perfilUser->imagem, ['class' => 'rounded-circle', 'width' => '20', 'height' => '20']); ?>
                         &nbsp;
                     <?php } else { ?>
                         <?= $this->Html->image('../files/user/user.png', ['class' => 'rounded-circle', 'width' => '20', 'height' => '20']); ?>
                     <?php } ?>
-                        <span class="d-none d-sm-inline"><?= current(str_word_count($perfilUser['name'], 2)); ?></span>
+                        <span class="d-none d-sm-inline"><?= current(str_word_count($perfilUser->name, 2)); ?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <?= $this->Html->link('<i class="fas fa-user"></i> Perfil',

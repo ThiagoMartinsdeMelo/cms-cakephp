@@ -46,7 +46,8 @@ class UsersController extends AppController
 
     public function perfil()
     {
-        $user = $this->Auth->user();
+        $user_id = $this->Auth->user('id');
+        $user = $this->Users->get($user_id);
 
         $this->set(compact('user'));
     }
@@ -104,10 +105,6 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                if ($this->Auth->user('id') === $user->id) {
-                    $data = $user->toArray();
-                    $this->Auth->setUser($data);
-                }
                 $this->Flash->success(__('Perfil editado com sucesso.'));
 
                 return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
