@@ -28,7 +28,7 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label><span class="text-danger">*</span> Foto (150X150)</label>
-            <?= $this->Form->file('imagem', ['label' => false, 'onchange' => 'previewImagem()']); ?>
+            <?= $this->Form->control('imagem', ['type' => 'file', 'label' => false, 'onchange' => 'previewImagem()']); ?>
         </div>
         <div class="form-group col-md-6">
             <?php

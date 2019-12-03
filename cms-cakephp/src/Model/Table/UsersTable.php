@@ -80,6 +80,12 @@ class UsersTable extends Table
                     'message' => 'A senha deve ter no minimo 6 caracteres.',
                 ]
             ]);
+        $validator
+            ->notEmpty('imagem', 'Necessario selecionar uma foto.')
+            ->add('imagem', 'file', [
+                'rule' => ['mimeType', ['image/jpeg', 'image/png']],
+                'message' => 'Extensao da foto invalida. Selecione foto JPEG ou PNG.'
+            ]);
 
         return $validator;
     }
