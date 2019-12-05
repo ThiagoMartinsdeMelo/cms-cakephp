@@ -31,7 +31,7 @@
         <?php if (!empty($user->imagem)){ ?>
             <?= $this->Html->image('../files/user/'.$user->id.'/'.$user->imagem, ['class' => 'rounded-circle', 'width' => '120', 'height' => '120']); ?>&nbsp;
         <?php } else { ?>
-            <?= $this->Html->image('../files/user/logo_celk.png', ['class' => 'rounded-circle', 'width' => '120', 'height' => '120']); ?>
+            <?= $this->Html->image('../files/user/user.png', ['class' => 'rounded-circle', 'width' => '120', 'height' => '120']); ?>
         <?php } ?>
         <?= $this->Html->link(__('Alterar Foto'), ['controller' => 'Users', 'action' => 'alterarFotoPerfil'], ['class' => 'btn btn-outline-primary btn-sm']); ?>
     </dd>

@@ -99,9 +99,7 @@ class UsersController extends AppController
     public function editPerfil()
     {
         $user_id = $this->Auth->user('id');
-        $user = $this->Users->get($user_id, [
-            'contain' => []
-        ]);
+        $user = $this->Users->get($user_id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -117,9 +115,7 @@ class UsersController extends AppController
     public function editSenhaPerfil()
     {
         $user_id = $this->Auth->user('id');
-        $user = $this->Users->get($user_id, [
-            'contain' => []
-        ]);
+        $user = $this->Users->get($user_id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -134,9 +130,7 @@ class UsersController extends AppController
 
     public function editSenha($id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => []
-        ]);
+        $user = $this->Users->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -156,7 +150,7 @@ class UsersController extends AppController
         $imagemAntiga = $user->imagem;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->newEntity();
-            $user->imagem = $this->Users->slug($this->request->getData()['imagem']['name']);
+            $user->imagem = $this->Users->slugSingleUpload($this->request->getData()['imagem']['name']);
             $user->id = $user_id;
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
