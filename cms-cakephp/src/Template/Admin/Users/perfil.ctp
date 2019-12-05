@@ -28,12 +28,37 @@
 <dl class="row">
     <dt class="col-sm-3">Foto</dt>
     <dd class="col-sm-9">
-        <?php if (!empty($user->imagem)){ ?>
-            <?= $this->Html->image('../files/user/'.$user->id.'/'.$user->imagem, ['class' => 'rounded-circle', 'width' => '120', 'height' => '120']); ?>&nbsp;
-        <?php } else { ?>
+        <div class="img-perfil">
+            <?php if (!empty($user->imagem)){ ?>
+                <?= $this->Html->image('../files/user/'.$user->id.'/'.$user->imagem, ['class' => 'rounded-circle', 'width' => '120', 'height' => '120']); ?>&nbsp;
+                <div class="edit">
+                    <?= $this->Html->link(
+                        '<i class="fas fa-pencil-alt"></i>',
+                        [
+                            'controller' => 'Users',
+                            'action' => 'alterarFotoPerfil'
+                        ],
+                        [
+                            'escape' => false
+                        ]
+                    ); ?>
+                </div>
+            <?php } else { ?>
             <?= $this->Html->image('../files/user/user.png', ['class' => 'rounded-circle', 'width' => '120', 'height' => '120']); ?>
-        <?php } ?>
-        <?= $this->Html->link(__('Alterar Foto'), ['controller' => 'Users', 'action' => 'alterarFotoPerfil'], ['class' => 'btn btn-outline-primary btn-sm']); ?>
+                <div class="edit">
+                    <?= $this->Html->link(
+                        '<i class="fas fa-pencil-alt"></i>',
+                        [
+                            'controller' => 'Users',
+                            'action' => 'alterarFotoPerfil'
+                        ],
+                        [
+                            'escape' => false
+                        ]
+                    ); ?>
+                </div>
+            <?php } ?>
+        </div>
     </dd>
     <dt class="col-sm-3">ID</dt>
     <dd class="col-sm-9"><?= $user->id; ?></dd>
@@ -45,4 +70,8 @@
     <dd class="col-sm-9"><?= $user->username; ?></dd>
     <dt class="col-sm-3 text-truncate">Data do Cadastro</dt>
     <dd class="col-sm-9"><?= $user->created; ?></dd>
+
+
+
 </dl>
+
