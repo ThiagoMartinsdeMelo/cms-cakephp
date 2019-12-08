@@ -102,14 +102,14 @@ class UsersController extends AppController
         $imagemAntiga = $user->imagem;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->newEntity();
-            $user->imagem = $this->Users->slugSingleUpload($this->request->getData()['imagem']['name']);
+            $user->imagem = $this->Users->slugUploadImgRed($this->request->getData()['imagem']['name']);
             $user->id = $id;
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $destino = WWW_ROOT.'files'.DS.'user'.DS.$id.DS;
                 $imgUpload = $this->request->getData()['imagem'];
                 $imgUpload['name'] = $user->imagem;
-                if ($this->Users->singleUpload($imgUpload, $destino)) {
+                if ($this->Users->uploadImgRed($imgUpload, $destino, 150, 150)) {
                     if (($imagemAntiga !== null) && ($imagemAntiga !== $user->imagem)) {
                         unlink($destino.$imagemAntiga);
                     }
@@ -181,14 +181,14 @@ class UsersController extends AppController
         $imagemAntiga = $user->imagem;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->newEntity();
-            $user->imagem = $this->Users->slugSingleUpload($this->request->getData()['imagem']['name']);
+            $user->imagem = $this->Users->slugUploadImgRed($this->request->getData()['imagem']['name']);
             $user->id = $user_id;
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $destino = WWW_ROOT.'files'.DS.'user'.DS.$user_id.DS;
                 $imgUpload = $this->request->getData()['imagem'];
                 $imgUpload['name'] = $user->imagem;
-                if ($this->Users->singleUpload($imgUpload, $destino)) {
+                if ($this->Users->uploadImgRed($imgUpload, $destino, 150, 150)) {
                     if (($imagemAntiga !== null) && ($imagemAntiga !== $user->imagem)) {
                         unlink($destino.$imagemAntiga);
                     }
@@ -217,12 +217,13 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
+        $destino = WWW_ROOT.'files'.DS.'user'.DS.$user->id.DS;
+        $this->Users->deleteArq($destino);
         if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
+            $this->Flash->success(__('Usuário apagado com sucesso'));
         } else {
-            $this->Flash->danger(__('The user could not be deleted. Please, try again.'));
+            $this->Flash->danger(__('Erro: Usuário não foi apagado com sucesso'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
 
