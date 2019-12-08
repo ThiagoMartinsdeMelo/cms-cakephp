@@ -110,9 +110,7 @@ class UsersController extends AppController
                 $imgUpload = $this->request->getData()['imagem'];
                 $imgUpload['name'] = $user->imagem;
                 if ($this->Users->uploadImgRed($imgUpload, $destino, 150, 150)) {
-                    if (($imagemAntiga !== null) && ($imagemAntiga !== $user->imagem)) {
-                        unlink($destino.$imagemAntiga);
-                    }
+                    $this->Users->deleteFile($destino, $imagemAntiga, $user->imagem);
                     $this->Flash->success(__('Foto editada com sucesso.'));
                     return $this->redirect(['controller' => 'Users', 'action' => 'view', $id]);
                 } else {
@@ -189,9 +187,7 @@ class UsersController extends AppController
                 $imgUpload = $this->request->getData()['imagem'];
                 $imgUpload['name'] = $user->imagem;
                 if ($this->Users->uploadImgRed($imgUpload, $destino, 150, 150)) {
-                    if (($imagemAntiga !== null) && ($imagemAntiga !== $user->imagem)) {
-                        unlink($destino.$imagemAntiga);
-                    }
+                    $this->Users->deleteFile($destino, $imagemAntiga, $user->imagem);
                     $this->Flash->success(__('Foto editada com sucesso.'));
                     return $this->redirect(['controller' => 'Users', 'action' => 'perfil']);
                 } else {

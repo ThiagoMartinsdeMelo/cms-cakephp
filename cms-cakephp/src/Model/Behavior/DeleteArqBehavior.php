@@ -28,7 +28,7 @@ class DeleteArqBehavior extends Behavior
         }
     }
 
-    public function deleteFile($destino, $arqAntigo, $arqNovo)
+    public function deleteFile($destino, $arqAntigo, $arqNovo = null)
     {
         if(($arqAntigo !== null) AND ($arqAntigo !== $arqNovo)){
             $file = new File($destino . $arqAntigo);
