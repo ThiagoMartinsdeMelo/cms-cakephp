@@ -9,7 +9,10 @@
 <div class="form-group">
     <label>Senha</label>
     <?= $this->Form->control('password', ['class' => 'form-control', 'placeholder' => 'Digite a senha', 'label' => false]); ?>        
-</di>
+</div>
 <?= $this->Form->button(__('Acessar'), ['class' => 'btn btn-lg btn-primary btn-block']) ?>
-<p class="text-center">Esqueceu a senha?</p>
+<p class="text-center">
+    <?= $this->Html->link(__('Cadastrar'), ['controller' => 'Users', 'action' => 'cadastrar']); ?> - 
+    Esqueceu a senha?
+</p>
 <?= $this->Form->end() ?>

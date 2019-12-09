@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * Users Controller
@@ -12,6 +13,12 @@ use App\Controller\AppController;
  */
 class UsersController extends AppController
 {
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['cadastrar', 'logout']);
+    }
+
     /**
      * Index method
      *
@@ -66,6 +73,21 @@ class UsersController extends AppController
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->danger(__('The user could not be saved. Please, try again.'));
+        }
+        $this->set(compact('user'));
+    }
+
+    public function cadastrar()
+    {
+        $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('The user has been saved.'));
+
+                return $this->redirect(['controller' => 'Users', 'action' => 'login']);
             }
             $this->Flash->danger(__('The user could not be saved. Please, try again.'));
         }

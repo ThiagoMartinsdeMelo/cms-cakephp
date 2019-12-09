@@ -72,7 +72,7 @@ class AppController extends Controller
             $prefix = $this->request->getParam(['prefix']);
         }
         if ($prefix == 'admin') {
-            if (($this->request->getParam(['action']) !== null) && ($this->request->getParam(['action']) == 'login')) {
+            if (($this->request->getParam(['action']) !== null) && (($this->request->getParam(['action']) == 'login') || ($this->request->getParam(['action']) == 'cadastrar'))) {
                 $this->viewBuilder()->setLayout('login');
             } else {
                 $user = TableRegistry::get('Users');
