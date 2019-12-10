@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
+use Cake\Mailer\MailerAwareTrait;
 
 /**
  * Users Controller
@@ -80,18 +81,23 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
+    use MailerAwareTrait;
     public function cadastrar()
     {
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
+                $this->getMailer('User')->send('cadastroUser', [$user]);
+                /*
+                $msg = 'Caro(a) '.$user->name.'<br><br>Obrigado por se cadastrar.<br><br>';
                 $email = new Email('envemail');
                 $email->setTo($user->email)
                       ->setProfile('envemail')
                       ->setemailFormat('html')
-                      ->setSubject('Bem vindo')
-                      ->send('Bem vindo '.$user->name);
+                      ->setSubject(sprintf('Bem vindo'))
+                      ->send($msg);
+                */
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['controller' => 'Users', 'action' => 'login']);
