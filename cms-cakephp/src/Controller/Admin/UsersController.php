@@ -3,6 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\Mailer\Email;
 
 /**
  * Users Controller
@@ -85,6 +86,12 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
+                $email = new Email('envemail');
+                $email->setTo($user->email)
+                      ->setProfile('envemail')
+                      ->setemailFormat('html')
+                      ->setSubject('Bem vindo')
+                      ->send('Bem vindo '.$user->name);
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['controller' => 'Users', 'action' => 'login']);
