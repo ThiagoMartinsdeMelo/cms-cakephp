@@ -23,7 +23,7 @@ class UserMailer extends Mailer
               ->setemailFormat('html')
               ->setTemplate('welcome')
               ->setLayout('user')
-              ->setViewVars(['name' => $user->name])
+              ->setViewVars(['name' => $user->name, 'cod_val_email' => $user->cod_val_email, 'host_name' => $user->host_name ])
               ->setSubject(sprintf('Bem vindo'));
     }
 

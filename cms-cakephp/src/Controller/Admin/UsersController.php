@@ -5,6 +5,9 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
 use Cake\Mailer\MailerAwareTrait;
+use Cake\Utility\Security;
+use Cake\Routing\Router;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -18,7 +21,7 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['cadastrar', 'logout']);
+        $this->Auth->allow(['cadastrar', 'logout', 'confEmail']);
     }
 
     /**
@@ -87,8 +90,12 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            $user->cod_val_email = Security::hash($this->request->getData('password').
+            $this->request->getData('email'), 'sha256', false);
             if ($this->Users->save($user)) {
-                $this->getMailer('User')->send('cadastroUser', [$user]);
+                $user->host_name = Router::fullBaseUrl().
+                $this->request->getAttribute('webroot').$this->request->getParam('prefix');
+                //$this->getMailer('User')->send('cadastroUser', [$user]);
                 /*
                 $msg = 'Caro(a) '.$user->name.'<br><br>Obrigado por se cadastrar.<br><br>';
                 $email = new Email('envemail');
@@ -105,6 +112,28 @@ class UsersController extends AppController
             $this->Flash->danger(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
+    }
+
+    public function confEmail($cod_val_email = null)
+    {
+        $userTable = TableRegistry::get('Users');
+        $confEmail = $userTable->getConfEmail($cod_val_email);
+        if ($confEmail) {
+            $user  = $this->Users->newEntity();
+            $user->id = $confEmail->id;
+            $user->email_val = '1';
+            $userTable->save($user);
+            if ($userTable->save($user)) {
+                $this->Flash->success(__('Email confirmado com sucesso.'));
+                return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            } else {
+                $this->Flash->danger(__('Erro: E-mail nao confirmado.'));
+                return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            }
+        } else {
+            $this->Flash->danger(__('Erro: E-mail nao confirmado.'));
+            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        }
     }
 
     /**
