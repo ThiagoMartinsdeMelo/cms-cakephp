@@ -21,7 +21,7 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['cadastrar', 'logout', 'confEmail']);
+        $this->Auth->allow(['cadastrar', 'logout', 'confEmail', 'recuperarSenha']);
     }
 
     /**
@@ -218,6 +218,27 @@ class UsersController extends AppController
             }
             $this->Flash->danger(__('Erro: Senha não foi editada com sucesso.'));
         }    
+        $this->set(compact('user'));
+    }
+
+    public function recuperarSenha()
+    {
+        $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+            $userTable = TableRegistry::get('Users');
+            $recupSenha = $userTable->getRecuperarSenha($this->request->getData()['email']);
+            if ($recupSenha) {
+                if ($recupSenha->recuperar_senha == '') {
+                    $user->id = $recupSenha->id;
+                    $user->recuperar_senha = Security::hash($this->request->getData()['email'] . $recupSenha->id, 'sha256', false);
+                    $userTable->save($user);
+                }
+                $this->Flash->success(__('E-mail enviado com sucesso, verifique a sua caixa de entrada.'));
+                return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            } else {
+                $this->Flash->danger(__('Erro: Nenhum usuário encontrado com esse e-mail.'));
+            }
+        }
         $this->set(compact('user'));
     }
 

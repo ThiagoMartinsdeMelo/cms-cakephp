@@ -13,6 +13,6 @@
 <?= $this->Form->button(__('Acessar'), ['class' => 'btn btn-lg btn-primary btn-block']) ?>
 <p class="text-center">
     <?= $this->Html->link(__('Cadastrar'), ['controller' => 'Users', 'action' => 'cadastrar']); ?> - 
-    Esqueceu a senha?
+    <?= $this->Html->link(__('Esqueceu a senha?'), ['controller' => 'Users', 'action' => 'recuperarSenha']); ?>
 </p>
 <?= $this->Form->end() ?>
